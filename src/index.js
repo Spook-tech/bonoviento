@@ -9,6 +9,7 @@ client.once('ready', () => {
    console.log(`Logged in as ${client.user.tag}!`);
 });
 
+console.log(process.env.DISCORD_TOKEN)
 client.login(process.env.DISCORD_TOKEN);
 
 console.log(new Date())
