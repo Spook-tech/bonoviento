@@ -199,7 +199,7 @@ client.on('ready', message => {
          messageText += `Пара #${index + 1}. ${lesson.name} - ${lesson.link}\n`;
       });
 
-      cron.schedule('00 6 * * *', () => channel.send("Доброе утро! Я Артем Бонов! Вот розклад на сегодня: \n" + messageText));
+      cron.schedule('00 8 * * *', () => channel.send("Доброе утро! Я Артем Бонов! Вот розклад на сегодня: \n" + messageText));
 
       scheduleTimes.forEach((time, index) => {
          cron.schedule(time, () => sendScheduledMessage(index));
