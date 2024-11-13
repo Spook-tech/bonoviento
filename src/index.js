@@ -3,13 +3,14 @@ require('dotenv').config();
 const { Client, GatewayIntentBits } = require('discord.js');
 const cron = require('node-cron');
 
+console.log(1, process.env.DISCORD_TOKEN)
+
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
 client.once('ready', () => {
    console.log(`Logged in as ${client.user.tag}!`);
 });
 
-console.log(process.env.DISCORD_TOKEN)
 client.login(process.env.DISCORD_TOKEN);
 
 console.log(new Date())
