@@ -69,7 +69,7 @@ const lessons = {
 
    biology: {
       name: 'Біологія',
-      link: 'https://us05web.zoom.us/j/8411452864?pwd=ZVRXUlFrQ3B6YVVKZUt3eVoz',
+      link: 'https://us05web.zoom.us/j/8411452864?pwd=ZVRXUlFrQ3B6YVVKZUt3eVozMTU3UT09',
    },
 
    sport: {
