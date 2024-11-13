@@ -1,9 +1,7 @@
-require('dotenv').config();
+require('dotenv').config({ path: './1.env' });
 
 const { Client, GatewayIntentBits } = require('discord.js');
 const cron = require('node-cron');
-
-console.log(1, process.env.DISCORD_TOKEN)
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
