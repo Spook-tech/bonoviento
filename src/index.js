@@ -1,4 +1,4 @@
-require('dotenv').config({ path: './1.env' });
+require('dotenv').config();
 
 const { Client, GatewayIntentBits } = require('discord.js');
 const cron = require('node-cron');
