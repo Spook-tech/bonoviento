@@ -167,9 +167,8 @@ function generateTodaySchedule() {
    return result;
 }
 
-client.on('ready', message => {
+client.on('ready', () => {
    console.log(`Logged in as ${client.user.tag}!`);
-   const currentDay = getCurrentDay();
    const channel = client.channels.cache.get('1304557538439598151');
 
    if (!channel) {
@@ -177,40 +176,51 @@ client.on('ready', message => {
       return;
    }
 
-   if (currentDay !== "Sunday" && currentDay !== "Saturday") {
-      const schedule = generateTodaySchedule();
+   // Функция для отправки расписания и проверки текущего дня
+   const sendDailyMessage = () => {
+      const currentDay = getCurrentDay();
 
-      console.log(schedule)
+      if (currentDay !== "Sunday" && currentDay !== "Saturday") {
+         const schedule = generateTodaySchedule();
 
-      const sendScheduledMessage = (lessonIndex) => {
+         let messageText = 'Доброе утро! Я Артем Бонов! Вот розклад на сегодня: \n';
          schedule.lessons.forEach((lesson, index) => {
-            if (index == lessonIndex) {
-               channel.send(`Пара #${index + 1} почнеться через 5 хвилин. ${lesson.name} - ${lesson.link} \n`)
-            }
+            messageText += `Пара #${index + 1}. ${lesson.name} - ${lesson.link}\n`;
          });
-      };
 
-      const scheduleTimes = ['25 8 * * *', '55 9 * * *', '45 11 * * *', '15 13 * * *'];
+         channel.send(messageText);
+      }
+   };
 
-      cron.schedule('00 00 * * *', () => channel.send("Спокойной ночи! Я Артем Бонов!"));
+   const sendScheduledMessage = (lessonIndex) => {
+      const currentDay = getCurrentDay();
 
-      let messageText = '';
-      schedule.lessons.forEach((lesson, index) => {
-         messageText += `Пара #${index + 1}. ${lesson.name} - ${lesson.link}\n`;
-      });
+      if (currentDay !== "Sunday" && currentDay !== "Saturday") {
+         const schedule = generateTodaySchedule();
 
-      cron.schedule('20 8 * * *', () => channel.send("Доброе утро! Я Артем Бонов! Вот розклад на сегодня: \n" + messageText));
+         if (schedule.lessons[lessonIndex]) {
+            const lesson = schedule.lessons[lessonIndex];
+            channel.send(`Пара #${lessonIndex + 1} почнется через 5 минут. ${lesson.name} - ${lesson.link}`);
+         }
+      }
+   };
 
-      scheduleTimes.forEach((time, index) => {
-         cron.schedule(time, () => sendScheduledMessage(index));
-      });
-   }
+   // Задачи с расписанием
+   const scheduleTimes = ['25 8 * * *', '55 9 * * *', '45 11 * * *', '15 13 * * *'];
+
+   cron.schedule('20 8 * * *', sendDailyMessage);
+
+   scheduleTimes.forEach((time, index) => {
+      cron.schedule(time, () => sendScheduledMessage(index));
+   });
+
+   cron.schedule('00 00 * * *', () => channel.send("Спокойной ночи! Я Артем Бонов!"));
 });
 
 client.on('messageCreate', message => {
    if (message.author.bot) return;
 
-   
+
    if (message.content === 'тест') {
       message.reply('answer');
    }
