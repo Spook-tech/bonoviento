@@ -167,6 +167,21 @@ function generateTodaySchedule() {
    return result;
 }
 
+async function getCatImage() {
+   try {
+      let response = await fetch("https://api.thecatapi.com/v1/images/search"); // Запрос на получение случайного изображения
+      if (response.ok) {
+         let json = await response.json();
+         return json[0].url; // Возвращаем URL изображения кота
+      } else {
+         console.log("Ошибка HTTP: " + response.status);
+      }
+   } catch (error) {
+      console.error("Ошибка запроса:", error);
+   }
+}
+
+
 client.on('ready', () => {
    console.log(`Logged in as ${client.user.tag}!`);
    const channel = client.channels.cache.get('1304557538439598151');
@@ -176,8 +191,27 @@ client.on('ready', () => {
       return;
    }
 
+   async function sendMessage(messageText) {
+      const random = Math.floor(Math.random() * 100) + 1;
+
+      if (random < 25) {
+         const catImageUrl = await getCatImage();
+
+         if (catImageUrl) {
+            await channel.send({
+               content: `${messageText}\n Вам повезло, и с шансом 25% вам попалась фотография кота для поднятия настроения!`,
+               files: [catImageUrl]
+            });
+         } else {
+            await channel.send(messageText);
+         }
+      } else {
+         await channel.send(messageText);
+      }
+   }
+
    // Функция для отправки расписания и проверки текущего дня
-   const sendDailyMessage = () => {
+   const sendDailyMessage = async () => {
       const currentDay = getCurrentDay();
 
       if (currentDay !== "Sunday" && currentDay !== "Saturday") {
@@ -188,11 +222,11 @@ client.on('ready', () => {
             messageText += `Пара #${index + 1}. ${lesson.name} - ${lesson.link}\n`;
          });
 
-         channel.send(messageText);
+         await sendMessage(messageText);
       }
    };
 
-   const sendScheduledMessage = (lessonIndex) => {
+   const sendScheduledMessage = async (lessonIndex) => {
       const currentDay = getCurrentDay();
 
       if (currentDay !== "Sunday" && currentDay !== "Saturday") {
@@ -200,7 +234,12 @@ client.on('ready', () => {
 
          if (schedule.lessons[lessonIndex]) {
             const lesson = schedule.lessons[lessonIndex];
-            channel.send(`Пара #${lessonIndex + 1} почнется через 5 минут. ${lesson.name} - ${lesson.link}`);
+
+            if (lesson.name == '-') {
+               await sendMessage(`Пара #${lessonIndex + 1} не начнется через 5 минут. Её нету!`);
+            }
+
+            await sendMessage(`Пара #${lessonIndex + 1} начнется через 5 минут. ${lesson.name} - ${lesson.link}`);
          }
       }
    };
@@ -214,15 +253,16 @@ client.on('ready', () => {
       cron.schedule(time, () => sendScheduledMessage(index));
    });
 
-   cron.schedule('00 00 * * *', () => channel.send("Спокойной ночи! Я Артем Бонов!"));
+   cron.schedule('00 00 * * *', () => sendMessage("Спокойной ночи! Я Артем Бонов!"));
 });
 
-client.on('messageCreate', message => {
+
+client.on('messageCreate', async (message) => {
    if (message.author.bot) return;
 
 
-   if (message.content === 'тест') {
-      message.reply('answer');
+   if (message.content === 'kot') {
+
    }
 
    if (message.content === 'day') {
