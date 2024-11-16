@@ -94,7 +94,7 @@ const lessons = {
 
    culture: {
       name: 'Культорологія',
-      link: 'https://meet.google.com/rog-rnza-aks',
+      link: 'https://meet.google.com/jvr-jsjb-yuo',
    },
 
    blank: {
@@ -181,9 +181,7 @@ async function getCatImage() {
    }
 }
 
-
-client.on('ready', () => {
-   console.log(`Logged in as ${client.user.tag}!`);
+async function sendMessage(messageText) {
    const channel = client.channels.cache.get('1304557538439598151');
 
    if (!channel) {
@@ -191,24 +189,26 @@ client.on('ready', () => {
       return;
    }
 
-   async function sendMessage(messageText) {
-      const random = Math.floor(Math.random() * 100) + 1;
+   const random = Math.floor(Math.random() * 100) + 1;
+   if (random < 25) {
+      const catImageUrl = await getCatImage();
 
-      if (random < 25) {
-         const catImageUrl = await getCatImage();
-
-         if (catImageUrl) {
-            await channel.send({
-               content: `${messageText}\n Вам повезло, и с шансом 25% вам попалась фотография кота для поднятия настроения!`,
-               files: [catImageUrl]
-            });
-         } else {
-            await channel.send(messageText);
-         }
+      if (catImageUrl) {
+         await channel.send({
+            content: `${messageText}\n Вам повезло, и с шансом 25% вам попалась фотография кота для поднятия настроения!`,
+            files: [catImageUrl]
+         });
       } else {
          await channel.send(messageText);
       }
+   } else {
+      await channel.send(messageText);
    }
+}
+
+client.on('ready', () => {
+   console.log(`Logged in as ${client.user.tag}!`);
+
 
    // Функция для отправки расписания и проверки текущего дня
    const sendDailyMessage = async () => {
@@ -223,6 +223,8 @@ client.on('ready', () => {
          });
 
          await sendMessage(messageText);
+      } else {
+         await sendMessage("Доброе утро! Я Артем Бонов! Сегодня выходной!");
       }
    };
 
@@ -237,7 +239,8 @@ client.on('ready', () => {
 
             if (lesson.name == '-') {
                await sendMessage(`Пара #${lessonIndex + 1} не начнется через 5 минут. Её нету!`);
-            }
+               return "";
+            } 
 
             await sendMessage(`Пара #${lessonIndex + 1} начнется через 5 минут. ${lesson.name} - ${lesson.link}`);
          }
@@ -261,8 +264,8 @@ client.on('messageCreate', async (message) => {
    if (message.author.bot) return;
 
 
-   if (message.content === 'kot') {
-
+   if (message.content === 'test') {
+      sendMessage('test')
    }
 
    if (message.content === 'day') {
