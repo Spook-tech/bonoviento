@@ -195,7 +195,7 @@ async function sendMessage(messageText) {
 
       if (catImageUrl) {
          await channel.send({
-            content: `${messageText}\n Вам повезло, и с шансом 25% вам попалась фотография кота для поднятия настроения!`,
+            content: `${messageText}\nВам повезло, и с шансом 25% вам попалась фотография кота для поднятия настроения!`,
             files: [catImageUrl]
          });
       } else {
