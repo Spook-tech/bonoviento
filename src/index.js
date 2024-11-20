@@ -250,7 +250,7 @@ client.on('ready', () => {
    // Задачи с расписанием
    const scheduleTimes = ['25 8 * * *', '55 9 * * *', '45 11 * * *', '15 13 * * *'];
 
-   cron.schedule('00 8 * * *', sendDailyMessage);
+   cron.schedule('02 8 * * *', sendDailyMessage);
 
    scheduleTimes.forEach((time, index) => {
       cron.schedule(time, () => sendScheduledMessage(index));
