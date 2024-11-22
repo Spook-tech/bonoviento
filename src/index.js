@@ -190,7 +190,7 @@ async function sendMessage(messageText) {
    }
 
    const random = Math.floor(Math.random() * 100) + 1;
-   if (random < 25) {
+   if (random < 26) {
       const catImageUrl = await getCatImage();
 
       if (catImageUrl) {
