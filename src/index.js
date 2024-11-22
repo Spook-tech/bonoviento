@@ -237,10 +237,17 @@ client.on('ready', () => {
          if (schedule.lessons[lessonIndex]) {
             const lesson = schedule.lessons[lessonIndex];
 
+            
             if (lesson.name == '-') {
                await sendMessage(`Пара #${lessonIndex + 1} не начнется через 5 минут. Её нету!`);
                return "";
-            } 
+            }
+            
+            const random = Math.floor(Math.random() * 100) + 1;
+            if (random < 6) {
+               await sendMessage(`Пара #${lessonIndex + 1} начнется через 5 минут.  ${lesson.name} - К сожалению, вам не повезло, и ссылку на урок прийдется искать самому, удачи! ♥`);
+               return;
+            }
 
             await sendMessage(`Пара #${lessonIndex + 1} начнется через 5 минут. ${lesson.name} - ${lesson.link}`);
          }
