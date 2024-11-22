@@ -39,7 +39,7 @@ const lessons = {
 
    cultural: {
       name: 'Культурологія',
-      link: 'https://meet.google.com/vkb-opij-giw',
+      link: 'https://meet.google.com/jvr-jsjb-yuo',
    },
 
    graphics: {
