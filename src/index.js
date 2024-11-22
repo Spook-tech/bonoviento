@@ -84,7 +84,7 @@ const lessons = {
 
    english: {
       name: 'English',
-      link: 'Уточняю данные...',
+      link: 'Група 1 (я тут) - https://us04web.zoom.us/j/78391294205?pwd=5rWx46hBcbLTAuqrlKhIASfJHw5CbU.1 /n Група 2 - https://us05web.zoom.us/j/4928111409?pwd=YVIxOFdXemhRTGRjbWJpQzg1OFVhdz09',
    },
 
    ukraine: {
