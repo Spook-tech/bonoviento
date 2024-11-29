@@ -194,7 +194,40 @@ async function sendMessage(messageText) {
    }
 
    const random = Math.floor(Math.random() * 100) + 1;
-   if (random < 26) {
+   async function sendMessage(messageText) {
+      const channel = client.channels.cache.get('1304557538439598151');
+   
+      if (!channel) {
+         console.log('Канал не найден');
+         return;
+      }
+   
+      const random = Math.floor(Math.random() * 100) + 1;
+
+      if (random <= 10) {
+         const catImage1 = await getCatImage();
+         const catImage2 = await getCatImage();
+   
+         if (catImage1 && catImage2) {
+            await channel.send({
+               content: `${messageText}\nПоздравляем! С шансом 10% вам попались две фотографии котов для поднятия настроения!`,
+               files: [catImage1, catImage2]
+            });
+         } else if (catImage1) {
+            await channel.send({
+               content: `${messageText}\nС шансом 25% вам попалась одна фотография кота для поднятия настроения!`,
+               files: [catImage1]
+            });
+         } else {
+            await channel.send(messageText);
+         }
+      } else {
+         await channel.send(messageText);
+      }
+   }
+
+   
+   if (random < 26 && random > 10) {
       const catImageUrl = await getCatImage();
 
       if (catImageUrl) {
@@ -278,13 +311,4 @@ client.on('ready', () => {
 
 client.on('messageCreate', async (message) => {
    if (message.author.bot) return;
-
-
-   if (message.content === 'test') {
-      sendMessage('test')
-   }
-
-   if (message.content === 'day') {
-      message.reply('answer');
-   }
 });
