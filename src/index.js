@@ -13,10 +13,14 @@ client.login(process.env.DISCORD_TOKEN);
 
 console.log(new Date())
 
-function getCurrentDay() {
-   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+function getCurrentDay(lang = 'en') {
+   const days = {
+       en: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+       ukr: ["Неділя", "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота"]
+   };
+
    const date = new Date();
-   const dayOfWeek = days[date.getDay()];
+   const dayOfWeek = days[lang]?.[date.getDay()] || days.en[date.getDay()];
 
    return dayOfWeek;
 }
@@ -217,7 +221,7 @@ client.on('ready', () => {
       if (currentDay !== "Sunday" && currentDay !== "Saturday") {
          const schedule = generateTodaySchedule();
 
-         let messageText = 'Доброе утро! Я Артем Бонов! Вот розклад на сегодня: \n';
+         let messageText = `Доброе утро, сегодня ${currentDay}! Я Артем Бонов! Вот розклад на сегодня: \n`;
          schedule.lessons.forEach((lesson, index) => {
             messageText += `Пара #${index + 1}. ${lesson.name} - ${lesson.link}\n`;
          });
