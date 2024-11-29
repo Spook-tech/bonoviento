@@ -253,6 +253,11 @@ client.on('ready', () => {
                return;
             }
 
+            if (lesson.name == "Культурологія ") {
+               await sendMessage(`Пара #${lessonIndex + 1} начнется через 5 минут. ${lesson.name} - ${lesson.link}. Треш урок`);
+               return;
+            }
+
             await sendMessage(`Пара #${lessonIndex + 1} начнется через 5 минут. ${lesson.name} - ${lesson.link}`);
          }
       }
