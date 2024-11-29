@@ -221,7 +221,7 @@ client.on('ready', () => {
       if (currentDay !== "Sunday" && currentDay !== "Saturday") {
          const schedule = generateTodaySchedule();
 
-         let messageText = `Доброе утро, сегодня ${currentDay}! Я Артем Бонов! Вот розклад на сегодня: \n`;
+         let messageText = `Доброе утро! Я Артем Бонов и сегодня ${getCurrentDay('ukr')}! Вот розклад на день: \n`;
          schedule.lessons.forEach((lesson, index) => {
             messageText += `Пара #${index + 1}. ${lesson.name} - ${lesson.link}\n`;
          });
